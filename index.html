@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>住まいと暮らしチェック｜志木モデル</title>
+<style>
+:root{
+  --bg:#eef3ef;
+  --card:#ffffff;
+  --subcard:#f5f8f6;
+  --line:#c9d8ce;
+  --main:#2f6b56;
+  --main-dark:#214d3f;
+  --main-soft:#dceee4;
+  --text:#22302a;
+  --muted:#55635c;
+  --yes:#c94d4d;
+  --no:#3d9b4f;
+  --back:#7a877f;
+  --restart:#4e5752;
+  --progress:#4a8f70;
+  --tel-bg:#ffe8c9;
+  --tel-text:#b65b00;
+  --video-bg:#dceaff;
+  --video-text:#0f4f99;
+  --ai-bg:#e6f2ea;
+  --ai-border:#b9d8c3;
+  --warn-bg:#fff3dc;
+  --warn-border:#efce81;
+  --warn-text:#7b5600;
+  --danger-bg:#ffe4e4;
+  --danger-border:#efb2b2;
+  --danger-text:#9d2e2e;
+  --line-share-bg:#e9f8ee;
+  --line-share-border:#b8e0c4;
+  --line-share-text:#184f2c;
+  --line-btn:#06c755;
+  --line-btn-dark:#049b42;
+  --copy-btn:#2f6b56;
+  --copy-btn-dark:#214d3f;
+  --shadow:0 14px 32px rgba(29,52,42,.10);
+  --radius:24px;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#f6faf7 0%, #edf3ef 100%);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;
+  color:var(--text);
+}
+
+.wrap{
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+  padding:18px 14px 28px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  border:1px solid #e5eee8;
+  padding:20px 16px 24px;
+}
+
+.hero{
+  background:linear-gradient(135deg,#eef8f1 0%, #e3f0e8 100%);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px 16px;
+  margin-bottom:18px;
+}
+
+.badge{
+  display:inline-block;
+  background:#d0e8d9;
+  color:var(--main-dark);
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+h1{
+  font-size:30px;
+  line-height:1.45;
+  text-align:center;
+  color:var(--main-dark);
+  margin:0 0 14px;
+  letter-spacing:.02em;
+}
+
+h2{
+  font-size:24px;
+  line-height:1.5;
+  color:var(--main-dark);
+  margin:0 0 12px;
+}
+
+p{
+  font-size:20px;
+  line-height:1.9;
+  margin:10px 0;
+}
+
+.small{
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.75;
+}
+
+.section{
+  margin-top:22px;
+  padding-top:20px;
+  border-top:2px solid var(--line);
+}
+
+button{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:22px 16px;
+  font-size:27px;
+  font-weight:800;
+  margin-top:14px;
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  transition:none !important;
+  transform:none !important;
+  box-shadow:none;
+}
+
+button:active,
+button:focus,
+button:hover{
+  transform:none !important;
+  scale:1 !important;
+  outline:none;
+}
+
+.start{background:#5b9fe0;color:#fff}
+.yes{background:var(--yes);color:#fff}
+.no{background:var(--no);color:#fff}
+.back{background:var(--back);color:#fff}
+.restart{background:var(--restart);color:#fff}
+.copyBtn{background:var(--copy-btn);color:#fff}
+.lineBtn{background:var(--line-btn);color:#fff}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.progress{
+  text-align:right;
+  font-size:17px;
+  font-weight:700;
+  color:var(--muted);
+}
+
+.bar{
+  height:12px;
+  background:#dfe7e1;
+  border-radius:999px;
+  overflow:hidden;
+  margin:10px 0 18px;
+}
+
+.barInner{
+  height:100%;
+  background:linear-gradient(90deg,var(--main),var(--progress));
+  transition:width .25s ease;
+}
+
+.domain{
+  display:inline-block;
+  background:var(--main-soft);
+  color:var(--main-dark);
+  border-radius:999px;
+  padding:8px 14px;
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.q{
+  font-size:26px;
+  line-height:1.8;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+.summaryCard{
+  background:linear-gradient(135deg,#e7f4eb 0%, #dff0e6 100%);
+  border:2px solid var(--line);
+  border-radius:20px;
+  padding:18px 16px;
+}
+
+.summaryTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.stateTitle{
+  font-size:24px;
+  font-weight:800;
+  color:var(--main-dark);
+}
+
+.scoreBadge{
+  font-size:17px;
+  font-weight:800;
+  color:var(--main-dark);
+  background:#cfe6d7;
+  padding:8px 12px;
+  border-radius:999px;
+}
+
+.quickGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:12px;
+}
+
+.quickCard{
+  background:var(--subcard);
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+}
+
+.quickLabel{
+  font-size:14px;
+  font-weight:800;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+
+.quickValue{
+  font-size:22px;
+  font-weight:800;
+  color:var(--main-dark);
+  line-height:1.5;
+}
+
+.riskGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.riskCard{
+  background:var(--subcard);
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:14px 14px 12px;
+}
+
+.riskLabel{
+  font-size:22px;
+  font-weight:800;
+  color:var(--main-dark);
+  margin-bottom:4px;
+}
+
+.riskScore{
+  font-size:16px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.meter{
+  height:12px;
+  background:#dde7df;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+
+.meterIn{
+  height:100%;
+  background:linear-gradient(90deg,var(--main),var(--progress));
+}
+
+.actionGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+.actionCard{
+  background:#fff;
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+}
+
+.actionNum{
+  display:inline-block;
+  min-width:36px;
+  height:36px;
+  line-height:36px;
+  text-align:center;
+  border-radius:999px;
+  background:#d7e9de;
+  color:var(--main-dark);
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.aiBox{
+  background:var(--ai-bg);
+  border:2px solid var(--ai-border);
+  border-radius:20px;
+  padding:16px 14px;
+}
+
+.aiTitle{
+  font-size:22px;
+  font-weight:800;
+  color:var(--main-dark);
+  margin:0 0 8px;
+}
+
+.aiLabel{
+  display:inline-block;
+  font-size:13px;
+  font-weight:800;
+  color:var(--main-dark);
+  background:#cfe6d7;
+  border-radius:999px;
+  padding:6px 10px;
+  margin-bottom:8px;
+}
+
+.warnBox{
+  background:var(--warn-bg);
+  border:2px solid var(--warn-border);
+  border-radius:18px;
+  padding:14px;
+  color:var(--warn-text);
+}
+
+.dangerBox{
+  background:var(--danger-bg);
+  border:2px solid var(--danger-border);
+  border-radius:18px;
+  padding:14px;
+  color:var(--danger-text);
+}
+
+.tel{
+  display:block;
+  text-decoration:none;
+  background:var(--tel-bg);
+  color:var(--tel-text);
+  border-radius:16px;
+  padding:18px 16px;
+  margin-top:10px;
+  font-size:21px;
+  font-weight:800;
+  border:1px solid #f3d3a2;
+}
+
+.video{
+  display:block;
+  text-decoration:none;
+  background:var(--video-bg);
+  color:var(--video-text);
+  border-radius:16px;
+  padding:16px;
+  margin-top:10px;
+  font-size:19px;
+  font-weight:800;
+  border:1px solid #bfd6ff;
+}
+
+.subBox{
+  background:var(--subcard);
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+}
+
+.lineShareBox{
+  background:var(--line-share-bg);
+  border:2px solid var(--line-share-border);
+  border-radius:20px;
+  padding:16px 14px;
+}
+
+.lineShareTitle{
+  font-size:22px;
+  font-weight:800;
+  color:var(--line-share-text);
+  margin:0 0 8px;
+}
+
+.lineShareLabel{
+  display:inline-block;
+  font-size:13px;
+  font-weight:800;
+  color:var(--line-share-text);
+  background:#d3f0db;
+  border-radius:999px;
+  padding:6px 10px;
+  margin-bottom:8px;
+}
+
+.shareTextarea{
+  width:100%;
+  min-height:240px;
+  resize:vertical;
+  border:2px solid var(--line-share-border);
+  border-radius:16px;
+  padding:14px;
+  font-size:18px;
+  line-height:1.8;
+  color:var(--text);
+  background:#fff;
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+.shareTextarea:focus{
+  outline:none;
+  border-color:#7bc28f;
+}
+
+.copyNote{
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.7;
+  margin-top:10px;
+}
+
+@media (max-width:560px){
+  .wrap{padding:14px 12px 24px}
+  .card{padding:18px 14px 22px}
+  h1{font-size:27px}
+  h2{font-size:23px}
+  p{font-size:19px}
+  .q{font-size:24px}
+  button{font-size:25px;padding:21px 14px}
+  .grid,.quickGrid,.riskGrid{grid-template-columns:1fr}
+  .summaryTop{align-items:flex-start}
+  .shareTextarea{font-size:17px;min-height:220px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="app" class="card"></div>
+</div>
+
+<script>
+const STORAGE_KEY = "shiki_model_dx_v21";
+const AI_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzy28uGC8LhandUT9lAoEqI7qwiCRcJqZqbWBNofQB9Cvy5KQ42cHkliK4JvUzBJ7hN/exec";
+const TOWN_LINE_URL = "https://lin.ee/kf5lGQ5";
+const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@Shiki-Model";
+
+const domainInfo = {
+  house:{
+    label:"住宅・相続",
+    change:"住まいの管理や将来の話し合いが後回しになると、いざという時の判断が難しくなりやすくなります。",
+    firstStep:"家のことを将来どうするか、まず家族と一緒に整理を始めることが大切です。"
+  },
+  iso:{
+    label:"人間関係・孤立",
+    change:"相談や助けを求める機会が少ないと、暮らしの変化に気づくのが遅れやすくなります。",
+    firstStep:"家族や身近な人との連絡先や相談先を整理し、共有しておくことが大切です。"
+  },
+  life:{
+    label:"生活機能",
+    change:"家事や移動、住まいの維持管理の負担が重なると、住み続ける力が少しずつ落ちていきやすくなります。",
+    firstStep:"掃除、買い物、段差、修繕など、どこが暮らしにくくなっているかを一つずつ整理することが第一歩です。"
+  },
+  health:{
+    label:"健康",
+    change:"体調や意欲の変化が続くと、生活全体の安定や住まい方の判断にも影響しやすくなります。",
+    firstStep:"疲れやすさ、物忘れ、食事、服薬など、最近の変化を整理しておくことが大切です。"
+  },
+  money:{
+    label:"お金",
+    change:"支払い管理や将来費用の不安が強まると、住まいに関する判断を先送りしやすくなります。",
+    firstStep:"通帳・印鑑・固定費・将来費用の不安を整理し、家族と共有することが大切です。"
+  },
+  end:{
+    label:"終活",
+    change:"連絡先や希望の整理が進んでいないと、急な場面で本人も家族も迷いやすくなります。",
+    firstStep:"第一連絡先や希望、家財の整理など、ひとつずつ整理していくことが大切です。"
+  }
+};
+
+const videoLibrary = {
+  1: {title:"① 変化は小さいうちに動いた人が助かる理由", url:"https://youtube.com/shorts/CqcBxdelzjg?si=qsaw4prJOvT0K4_L"},
+  2: {title:"② 一人で抱える生活が危険になる瞬間", url:"https://youtube.com/shorts/sAFQCvvWig4?si=AGV-b4mjt06CJpAp"},
+  3: {title:"③ 生活が少しずつ崩れる本当の順番", url:"https://youtu.be/0IyG2DR4h3E?si=dmwy1XSERBP6-h-C"},
+  4: {title:"④ まだ大丈夫が一番危ない理由", url:"https://youtube.com/shorts/YS8TfsfbO0w?si=iEC7qhh02HuHdVH4"},
+  5: {title:"⑤ 孤立が始まるサイン", url:"https://youtube.com/shorts/oaQD3b5CJN8?si=ecKOHxTdy6EiLftI"},
+  6: {title:"⑥ 家の管理ができなくなる前兆", url:"https://youtube.com/shorts/5xaMYygdbjk?si=SV2ku-DimgWmCpzg"},
+  7: {title:"⑦ 生活機能の低下はこう進む", url:"https://youtube.com/shorts/52AjexRB1pI?si=A7HInZSJ-l9NaV94"},
+  8: {title:"⑧ 老後生活の分岐点", url:"https://youtube.com/shorts/TG3faNjlT08?si=syl6BE0GIPD2nuvq"},
+  9: {title:"⑨ 支援が必要になる人の共通点", url:"https://youtube.com/shorts/wAu07HdzPqU?si=5Fcv3vubQ_wL4mzT"},
+  10:{title:"⑩ 放置すると起きる未来", url:"https://youtube.com/shorts/yd2Haa7gsWw?si=dXvUSmtKO5z8kAKf"},
+  11:{title:"⑪ 住まい管理困難の影響", url:"https://youtube.com/shorts/coFGx8nDpdQ?si=ZB2Edo_GoCkL_5Ks"},
+  12:{title:"⑫ 空き家化までの流れ", url:"https://youtube.com/shorts/b_W6jnr76Ek?si=HRuJ1lJdACc-5qPd"},
+  13:{title:"⑬ お金管理崩れの影響", url:"https://youtube.com/shorts/1ing-dcC4qw?si=G6nKRcsvvy6ovgn6"},
+  14:{title:"⑭ 通帳管理停止の危険", url:"https://youtube.com/shorts/2L16_m1VgLo?si=0PFhZhPWtt1wa6_u"},
+  15:{title:"⑮ 外出減少の影響", url:"https://youtube.com/shorts/CPa7OIzAA0M?si=ncZLu9PTVi6gv_cw"},
+  16:{title:"⑯ 健康変化の影響", url:"https://youtube.com/shorts/P74GEPIZFTM?si=QpLRi5obE8_sda_a"},
+  17:{title:"⑰ つながり喪失の怖さ", url:"https://youtube.com/shorts/79FWL4HH_NA?si=QklqcGma6cSq5igr"},
+  18:{title:"⑱ 家事困難の連鎖", url:"https://youtube.com/shorts/AMD2O4E6vhg?si=WAnOKPH-gGolGDh6"},
+  19:{title:"⑲ 相続準備の重要性", url:"https://youtube.com/shorts/Tw_VARcZK0g?si=Kz705Q0llFnr7gki"},
+  20:{title:"⑳ 老後不安が現実になる瞬間", url:"https://youtube.com/shorts/cLdJ4ZuAY1s?si=pZ6YmFZhLql6iDRy"},
+  21:{title:"㉑ 地域包括支援センター相談の意味", url:"https://youtube.com/shorts/FOqTapoWsgI?si=JPLXiVlIhMaxee5R"},
+  22:{title:"㉒ 早い相談の効果", url:"https://youtube.com/shorts/FYW3se8SSmw?si=2xwYRTdugkVEh4Yc"},
+  23:{title:"㉓ 家族共有の重要性", url:"https://youtube.com/shorts/9xSa05usLDM?si=ThWboS0o1JjAI3Fm"},
+  24:{title:"㉔ 支援につながる順番", url:"https://youtube.com/shorts/WL5quWCKuao?si=pwGfyrXAAsLvtQhj"},
+  25:{title:"㉕ 住まい将来検討の第一歩", url:"https://youtube.com/shorts/dcJTxy5KKi8?si=exITjNAPOSrE5-SG"},
+  26:{title:"㉖ 専門職連携の効果", url:"https://youtube.com/shorts/cpgiikMEWQQ?si=CLmJuf8wzbbboAra"},
+  27:{title:"㉗ 社会福祉士ハブ機能", url:"https://youtube.com/shorts/CE1Esw27pqE?si=V-s3emMzA9VVCfUv"},
+  28:{title:"㉘ 支援後の未来変化", url:"https://youtube.com/shorts/fEJbVYoSB54?si=WfeachBH0aqgnhBj"},
+  29:{title:"㉙ 空き家予防は可能", url:"https://youtube.com/shorts/Uy5ptG8DkHQ?si=rVDsM49YTIsPouX9"},
+  30:{title:"㉚ 30年後安心の選択", url:"https://youtube.com/shorts/fX53AV8_3S8?si=tq8wRoyELy1ilHzK"},
+  31:{title:"31 自立向け動画①", url:"https://youtube.com/shorts/oatd9T5i0Zg?si=cD72tlie7zGOjJFe"},
+  32:{title:"32 自立向け動画②", url:"https://youtube.com/shorts/3J3kjvOC-pc?si=YSMOTlqU4bxW37dx"}
+};
+
+const questions = [
+  ["house","住宅・相続","庭の手入れや外回りの片付けを、以前より負担に感じることがある"],
+  ["house","住宅・相続","家の中に、数年以上使っていない部屋や物置状態の場所がある"],
+  ["house","住宅・相続","この家を将来どうするかについて、家族との話し合いが不足している"],
+  ["house","住宅・相続","家の権利証や境界に関する書類が、どこにあるかすぐには分からない"],
+  ["house","住宅・相続","今の家にあと何年住み続けるか、具体的なイメージが持てていない"],
+
+  ["iso","人間関係・孤立","近所に、ちょっとした困りごとを気軽に頼める相手がいない"],
+  ["iso","人間関係・孤立","家族や親戚と連絡を取り合うのは、数か月に一度あるかないかだ"],
+  ["iso","人間関係・孤立","地域の行事や趣味の集まりなど、外出の機会が以前より減っている"],
+  ["iso","人間関係・孤立","1日のうち、誰とも一言も会話をしない日がよくある"],
+  ["iso","人間関係・孤立","体調が悪くなった時に、すぐ連絡できる相手がいない"],
+
+  ["life","生活機能","重い買い物袋を持って歩くのが、以前より疲れやすくなった"],
+  ["life","生活機能","部屋の段差など、家の作りが不便だと感じることが増えた"],
+  ["life","生活機能","ゴミ出しや掃除など、当たり前の家事が少し面倒になり始めている"],
+  ["life","生活機能","電球交換や修繕など、家の維持管理を後回しにしている"],
+  ["life","生活機能","以前に比べて家の中で過ごす時間が長くなり、外出が億劫だ"],
+
+  ["health","健康","以前より『疲れが取れにくい』『体が重い』と感じることが増えた"],
+  ["health","健康","食事の準備が面倒で、簡単なものや同じ献立で済ませがちだ"],
+  ["health","健康","以前より、物忘れやうっかりが少し増えたと感じる"],
+  ["health","健康","楽しかった外出や趣味に、以前ほど関心が持てなくなった"],
+  ["health","健康","毎日飲んでいる薬の飲み忘れや管理に不安を感じ始めている"],
+
+  ["money","お金","通帳の記帳や、光熱費・税金の支払い管理を負担に感じている"],
+  ["money","お金","屋根や水回りの修理など、家の維持にかかる将来の費用が不安だ"],
+  ["money","お金","入院や施設入所が必要になった時の費用について、目処が立っていない"],
+  ["money","お金","通帳や印鑑の保管場所を、自分以外の誰も把握していない"],
+  ["money","お金","知らない電話や訪問販売など、お金のトラブルが起きそうで怖い"],
+
+  ["end","終活","急な体調不良時の『第一連絡先』を周囲と共有できていない"],
+  ["end","終活","家にある荷物や家財道具の整理が、まだあまり進んでいない"],
+  ["end","終活","自分の希望（医療や介護など）を書き残したものが、まだ何もない"],
+  ["end","終活","体力が落ちた時、今の家に住み続けるかどうかの判断を先送りにしている"],
+  ["end","終活","これからの自分や家のことについて、相談できる専門家や知人がいない"]
+];
+
+let currentIndex = 0;
+let answers = loadAnswers();
+const app = document.getElementById("app");
+
+function loadAnswers(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){
+    return [];
+  }
+}
+
+function saveAnswers(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(answers));
+}
+
+function startScreen(){
+  const canResume = answers.length > 0 && answers.length < questions.length;
+  if(canResume){ currentIndex = answers.length; }
+
+  app.innerHTML = `
+    <div class="hero">
+      <div class="badge">志木モデル DXチェック</div>
+      <h1>住まいと暮らしチェック</h1>
+      <p>このチェックは、単に点数で評価するためのものではありません。<br><br>志木モデルでは、空き家は突然生まれるものではなく、暮らし・健康・人とのつながり・お金・将来準備の変化が重なり、判断が先送りされた結果として生まれると考えます。</p>
+      <p>この画面の目的は、今の状態を一度整理し、必要があれば<strong>社会福祉士をハブとする支援</strong>につながる入口をつくることです。</p>
+      <p class="small">30問を「はい / いいえ」で答えます。途中で閉じても、この端末では続きから再開できます。</p>
+    </div>
+    ${canResume ? `<button class="start" onclick="resumeCheck()">つづきから再開</button>` : ``}
+    <button class="start" onclick="restartFromBeginning()">最初からはじめる</button>
+  `;
+}
+
+function resumeCheck(){
+  currentIndex = answers.length;
+  renderQuestion();
+}
+
+function restartFromBeginning(){
+  localStorage.removeItem(STORAGE_KEY);
+  answers = [];
+  currentIndex = 0;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  if(currentIndex >= questions.length){
+    renderResult();
+    return;
+  }
+
+  const q = questions[currentIndex];
+  const progress = ((currentIndex + 1) / questions.length) * 100;
+
+  app.innerHTML = `
+    <div class="progress">${currentIndex + 1} / ${questions.length}</div>
+    <div class="bar"><div class="barInner" style="width:${progress}%"></div></div>
+    <div class="domain">${q[1]}</div>
+    <div class="q">${q[2]}</div>
+    <div class="grid">
+      <button class="yes" onclick="answerQuestion(1)">はい</button>
+      <button class="no" onclick="answerQuestion(0)">いいえ</button>
+    </div>
+    <button class="back" onclick="goBack()">← 戻る</button>
+  `;
+}
+
+function answerQuestion(value){
+  answers[currentIndex] = value;
+  currentIndex++;
+  saveAnswers();
+  renderQuestion();
+}
+
+function goBack(){
+  if(currentIndex > 0){
+    currentIndex--;
+    answers = answers.slice(0, currentIndex);
+    saveAnswers();
+    renderQuestion();
+  }else{
+    startScreen();
+  }
+}
+
+function calcResult(){
+  const scores = {house:0, iso:0, life:0, health:0, money:0, end:0};
+  questions.forEach((q, idx) => {
+    scores[q[0]] += answers[idx] || 0;
+  });
+  const total = answers.reduce((sum, v) => sum + (v || 0), 0);
+  const priority = {life:0, health:1, iso:2, house:3, money:4, end:5};
+  const sorted = Object.entries(scores).sort((a,b) => {
+    if (b[1] !== a[1]) return b[1] - a[1];
+    return priority[a[0]] - priority[b[0]];
+  });
+  return {scores, total, sorted};
+}
+
+function getStage(total){
+  if(total <= 4) return "安心";
+  if(total <= 9) return "見守り";
+  if(total <= 14) return "注意";
+  if(total <= 19) return "要相談";
+  if(total <= 24) return "支援検討";
+  return "早めの対応";
+}
+
+function getStateTitle(total){
+  if(total <= 4) return "今はおおむね安心です";
+  if(total <= 9) return "少し気になるところがあります";
+  if(total <= 14) return "見直しのタイミングです";
+  if(total <= 19) return "早めに相談を考えたい状態です";
+  if(total <= 24) return "支援を具体的に考えたい状態です";
+  return "早めの対応が特に大切な状態です";
+}
+
+function getStateMessage(total){
+  if(total === 0) return "今回の回答では、現時点で大きな心配は強く見られませんでした。今の安心を保つためにも、連絡先や家の将来について、家族で少し共有しておくことが大切です。";
+  if(total <= 4) return "今は大きな不安が前面に出ていない可能性があります。ただし、安心な今のうちに連絡先や住まいの将来像を少し整理しておくと、後の判断がしやすくなります。";
+  if(total <= 9) return "まだ深刻化する前の段階でも、小さな変化がいくつか見え始めている可能性があります。今のうちに相談先を持っておくことが、将来の安心につながります。";
+  if(total <= 14) return "暮らしのいくつかの領域で、判断を先送りしやすい状態が見えています。志木モデルでは、この段階で立ち止まって整理することが大切だと考えます。";
+  if(total <= 19) return "暮らしの複数の領域で変化が重なり始めています。無理を続けるより、今の段階で整理しておくことが大切です。";
+  if(total <= 24) return "複数の領域で課題が重なっている可能性があります。今の段階で支援につながることが、これからの安心に役立ちます。";
+  return "かなり高いリスクが見られます。今は『まだ大丈夫』と先送りしてよい段階ではありません。暮らし、健康、家族、住まいの課題が重なり、このままでは生活の不安定化や家のことの放置が進み、空き家につながる危険も高まります。できるだけ早く家族で共有し、第三者と一緒に整理を始めることが大切です。";
+}
+
+function topRiskDomains(sorted){
+  const positive = sorted.filter(item => item[1] > 0);
+  if(positive.length === 0) return sorted.slice(0, 2);
+  return positive.slice(0, 2);
+}
+
+function renderRiskCards(topDomains){
+  let html = "";
+  topDomains.forEach(([key, score]) => {
+    const info = domainInfo[key];
+    const width = Math.min(score * 20, 100);
+    html += `
+      <div class="riskCard">
+        <div class="riskLabel">${info.label}</div>
+        <div class="riskScore">${score} / 5</div>
+        <div class="meter"><div class="meterIn" style="width:${width}%"></div></div>
+        <p>${info.change}</p>
+      </div>
+    `;
+  });
+  return html;
+}
+
+function renderTopActions(topDomains, scores){
+  const actions = [];
+  topDomains.forEach(([key]) => {
+    if(actions.length < 2){
+      actions.push(domainInfo[key].firstStep);
+    }
+  });
+
+  if((scores.life || 0) >= 4 || (scores.health || 0) >= 4){
+    actions.push("生活や健康の負担が大きい場合は、今の状態を整理したうえで、必要に応じて介護認定や受診について相談することが考えられます。");
+  }else if((scores.iso || 0) >= 4){
+    actions.push("家族との共有に加えて、無理のない範囲で地域の行事や身近な集まりに関わることも大切です。");
+  }else{
+    actions.push("まずは地域包括支援センターに相談し、今の状態を整理することが大切です。");
+  }
+
+  return `
+    <div class="actionGrid">
+      <div class="actionCard">
+        <div class="actionNum">1</div>
+        <p>${actions[0] || "今の状態を家族で共有することが大切です。"}</p>
+      </div>
+      <div class="actionCard">
+        <div class="actionNum">2</div>
+        <p>${actions[1] || "住まいと暮らしの中で、何を整理する必要があるかを確認してみましょう。"}</p>
+      </div>
+      <div class="actionCard">
+        <div class="actionNum">3</div>
+        <p>${actions[2] || "必要に応じて地域包括支援センターに相談し、整理を始めることが大切です。"}</p>
+      </div>
+    </div>
+  `;
+}
+
+function getDomainVideoCandidates(domainKey){
+  const map = {
+    life:[6,7,18],
+    health:[15,16,3],
+    iso:[5,17,2],
+    house:[11,12,19,25],
+    money:[13,14,20],
+    end:[19,23,25,30]
+  };
+  return map[domainKey] || [];
+}
+
+function getConsultVideos(){
+  return [21,22,24,27];
+}
+
+function uniquePush(arr, value){
+  if(!arr.includes(value)) arr.push(value);
+}
+
+function chooseRelatedVideos(total, topDomains, scores){
+  const selected = [];
+
+  if(total <= 4){
+    uniquePush(selected, 31);
+    uniquePush(selected, 32);
+    return selected.slice(0,2);
+  }
+
+  const firstKey = topDomains[0] ? topDomains[0][0] : null;
+  const secondKey = topDomains[1] ? topDomains[1][0] : null;
+
+  if(total <= 14){
+    if(firstKey){
+      const candidates = getDomainVideoCandidates(firstKey);
+      if(candidates[0]) uniquePush(selected, candidates[0]);
+      if(candidates[1]) uniquePush(selected, candidates[1]);
+    }
+    if(selected.length < 2 && secondKey){
+      const candidates2 = getDomainVideoCandidates(secondKey);
+      candidates2.forEach(v => {
+        if(selected.length < 2) uniquePush(selected, v);
+      });
+    }
+    if(selected.length < 2){
+      uniquePush(selected, 1);
+      uniquePush(selected, 30);
+    }
+    return selected.slice(0,2);
+  }
+
+  if(total <= 24){
+    if(firstKey){
+      const candidates = getDomainVideoCandidates(firstKey);
+      if(candidates[0]) uniquePush(selected, candidates[0]);
+    }
+    if((scores.life || 0) >= 4 || (scores.health || 0) >= 4){
+      uniquePush(selected, 21);
+    }else{
+      uniquePush(selected, getConsultVideos()[0]);
+    }
+    if(selected.length < 2 && secondKey){
+      const candidates2 = getDomainVideoCandidates(secondKey);
+      candidates2.forEach(v => {
+        if(selected.length < 2) uniquePush(selected, v);
+      });
+    }
+    return selected.slice(0,2);
+  }
+
+  if(firstKey){
+    const candidates = getDomainVideoCandidates(firstKey);
+    if(candidates[0]) uniquePush(selected, candidates[0]);
+  }
+  if((scores.life || 0) >= 4 || (scores.health || 0) >= 4){
+    uniquePush(selected, 27);
+  }else{
+    uniquePush(selected, 21);
+  }
+  if(selected.length < 2) uniquePush(selected, 22);
+  return selected.slice(0,2);
+}
+
+function renderRiskLinks(total, topDomains, scores){
+  const numbers = chooseRelatedVideos(total, topDomains, scores);
+  let html = "";
+  numbers.forEach(num => {
+    const video = videoLibrary[num];
+    if(video){
+      html += `<a class="video" href="${video.url}" target="_blank" rel="noopener noreferrer">${video.title}</a>`;
+    }
+  });
+  if(!html){
+    html = `<div class="subBox"><p>関連動画を表示できませんでした。</p></div>`;
+  }
+  return html;
+}
+
+function buildLocalAiComment(total, topDomains, scores){
+  if(total === 0){
+    return "今回は大きなリスクは見られませんでした。今の暮らしが比較的安定していることは大切なことです。今の安心を保つためにも、連絡先や書類の場所、家の今後について、家族で少し整理し、共有しておくことが将来の安心につながります。";
+  }
+
+  const firstKey = topDomains[0] ? topDomains[0][0] : null;
+  const secondKey = topDomains[1] ? topDomains[1][0] : null;
+
+  let severityIntro = "";
+  if(total <= 4){
+    severityIntro = "今はすぐに大きな支援が必要という状態ではありませんが、空き家予防は早めの整理が大切です。";
+  }else if(total <= 9){
+    severityIntro = "小さな変化が見え始めている段階です。今のうちに家族で共有し、住まいと暮らしを少しずつ整理しておくことが大切です。";
+  }else if(total <= 14){
+    severityIntro = "暮らしのいくつかの領域で変化が重なり始めています。この段階で整理を始めるかどうかで、今後の安心が変わってきます。";
+  }else if(total <= 19){
+    severityIntro = "判断の先送りが進みやすい状態です。このまま時間が過ぎると、暮らしだけでなく家のことも後回しになり、空き家を防ぐための整理が遅れやすくなります。";
+  }else if(total <= 24){
+    severityIntro = "かなり注意が必要な状態です。本人だけで抱えるのではなく、家族も含めて早めに状況を共有し、支援につながることが大切です。";
+  }else{
+    severityIntro = "かなり高いリスクが見られます。今は『まだ大丈夫』と先送りしてよい段階ではありません。暮らし、健康、家族、住まいの課題が重なり、このままでは生活の不安定化や家のことの放置が進み、空き家につながる危険も高まります。できるだけ早く家族で共有し、第三者と一緒に整理を始めることが大切です。";
+  }
+
+  let domainText = "";
+  if(firstKey){
+    domainText += domainInfo[firstKey].label + " の面で整理が必要な状態が見られました。";
+  }
+  if(secondKey){
+    domainText += " あわせて、" + domainInfo[secondKey].label + " の面でも見直しが必要です。";
+  }
+
+  let extra = "";
+  if((scores.life || 0) >= 4 || (scores.health || 0) >= 4){
+    extra += " 生活や健康の負担が大きい場合は、必要に応じて介護認定や生活支援、受診について相談することも考えられます。";
+  }
+  if((scores.iso || 0) >= 4){
+    extra += " 家族との共有に加えて、無理のない範囲で地域との関わりを持つことも、変化に早く気づく助けになります。";
+  }
+  if((scores.house || 0) >= 4 || (scores.money || 0) >= 4 || (scores.end || 0) >= 4){
+    extra += " 特に家の将来、費用面、連絡先や希望の整理が止まりやすいので、『何を整理する必要があるか』を家族で共有することが大切です。";
+  }
+
+  return severityIntro + " " + domainText + extra + " まずは地域包括支援センターに相談し、社会福祉士を中心に今の状況を整理する。その上で、どのような制度や支援が使えるのかを一緒に考えていくことが安心につながります。";
+}
+
+function buildLineShareText(result, topDomains, aiComment){
+  const lines = [];
+  lines.push("【住まいと暮らしチェック 結果共有】");
+  lines.push("");
+  lines.push("総合判定：" + getStage(result.total) + "（" + result.total + "/30点）");
+  if(topDomains[0]){
+    lines.push("特に注意したい分野①：" + domainInfo[topDomains[0][0]].label + "（" + topDomains[0][1] + "/5）");
+  }
+  if(topDomains[1]){
+    lines.push("特に注意したい分野②：" + domainInfo[topDomains[1][0]].label + "（" + topDomains[1][1] + "/5）");
+  }
+  lines.push("");
+  lines.push("AI整理コメント：");
+  lines.push(aiComment);
+  lines.push("");
+  lines.push("相談の入口：");
+  lines.push("地域包括支援センターに相談し、社会福祉士を中心に今の状況を整理する。");
+  return lines.join("\n");
+}
+
+async function fetchAiComment(total, topDomains, scores){
+  try{
+    const res = await fetch(AI_WEBAPP_URL, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        total: total,
+        topDomains: topDomains.map(([key]) => domainInfo[key].label),
+        scores: scores
+      })
+    });
+    const text = await res.text();
+    const data = JSON.parse(text);
+    if(data.ok && data.aiComment){
+      return data.aiComment;
+    }
+  }catch(e){}
+  return buildLocalAiComment(total, topDomains, scores);
+}
+
+async function copyLineComment(){
+  const el = document.getElementById("lineShareText");
+  if(!el) return;
+  el.select();
+  el.setSelectionRange(0, el.value.length);
+  try{
+    await navigator.clipboard.writeText(el.value);
+    alert("LINE送信用コメントをコピーしました。");
+  }catch(e){
+    document.execCommand("copy");
+    alert("LINE送信用コメントをコピーしました。");
+  }
+}
+
+async function renderResult(){
+  const result = calcResult();
+  const topDomains = topRiskDomains(result.sorted);
+  const aiComment = await fetchAiComment(result.total, topDomains, result.scores);
+  const lineShareText = buildLineShareText(result, topDomains, aiComment);
+
+  app.innerHTML = `
+    <h1>チェック結果</h1>
+
+    <div class="summaryCard">
+      <div class="summaryTop">
+        <div class="stateTitle">${getStateTitle(result.total)}</div>
+        <div class="scoreBadge">${result.total} / 30点</div>
+      </div>
+      <div class="quickGrid">
+        <div class="quickCard">
+          <div class="quickLabel">判定</div>
+          <div class="quickValue">${getStage(result.total)}</div>
+        </div>
+        <div class="quickCard">
+          <div class="quickLabel">特に注意したい分野</div>
+          <div class="quickValue">${topDomains[0] ? domainInfo[topDomains[0][0]].label : "大きな偏りなし"}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>特に注意したい2分野</h2>
+      <div class="riskGrid">
+        ${renderRiskCards(topDomains)}
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>今やること 3つ</h2>
+      ${renderTopActions(topDomains, result.scores)}
+    </div>
+
+    <div class="section">
+      <h2>AIコメント</h2>
+      <div class="aiBox">
+        <div class="aiLabel">AI整理メッセージ</div>
+        <div class="aiTitle">あなた向けのコメント</div>
+        <p>${aiComment}</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>LINE送信用コメント</h2>
+      <div class="lineShareBox">
+        <div class="lineShareLabel">社会福祉士にそのまま送れる文章</div>
+        <div class="lineShareTitle">コピーしてLINEに貼り付ける</div>
+        <textarea id="lineShareText" class="shareTextarea" readonly>${lineShareText}</textarea>
+        <p class="copyNote">この文章をコピーして、町内会のLINEや相談先にそのまま送れます。</p>
+      </div>
+      <button class="copyBtn" onclick="copyLineComment()">結果をコピーする</button>
+      <a class="tel" href="${TOWN_LINE_URL}" target="_blank" rel="noopener noreferrer">町内会LINEを開く</a>
+    </div>
+
+    <div class="section">
+      <h2>今の状態</h2>
+      <div class="subBox">
+        <p>このチェックで大切なのは、点数そのものではなく、<strong>どこで判断が止まりやすくなっているか</strong>に気づくことです。</p>
+        <p>志木モデルでは、空き家は結果であり、その前にある暮らしの変化や判断の先送りに早く気づくことが重要だと考えます。</p>
+        <p>${getStateMessage(result.total)}</p>
+      </div>
+    </div>
+
+    ${result.total >= 25 ? `
+    <div class="section">
+      <h2>注意</h2>
+      <div class="dangerBox">
+        <p>かなり高いリスクが見られます。家族だけで抱え込まず、できるだけ早く第三者と一緒に整理を始めることが大切です。</p>
+      </div>
+    </div>` : ""}
+
+    <div class="section">
+      <h2>相談先</h2>
+      <div class="subBox">
+        <p>志木モデルでは、社会福祉士がハブとなって、本人の思いや生活状況を整理し、必要に応じて保健師・主任ケアマネジャー・医療・介護・住まい・法律・金融・地域支援などの支援につなぐ考え方を重視しています。</p>
+        <p>まずは地域包括支援センターに相談し、社会福祉士を中心に今の状況を整理する。その上で、どのような制度や支援が使えるのかを一緒に考えていきます。</p>
+      </div>
+      <a class="tel" href="tel:0484718201">志木市高齢者あんしん相談センター（中央） 048-471-8201</a>
+      <a class="tel" href="tel:0484713555">志木市高齢者あんしん相談センター（南部） 048-471-3555</a>
+      <a class="tel" href="tel:0484714165">志木市高齢者あんしん相談センター（北部） 048-471-4165</a>
+    </div>
+
+    <div class="section">
+      <h2>関連動画</h2>
+      <p>上位リスクに合わせて、固定している動画の中から2本を表示しています。</p>
+      ${renderRiskLinks(result.total, topDomains, result.scores)}
+    </div>
+
+    <div class="section">
+      <h2>志木モデルYouTubeチャンネル</h2>
+      <a class="video" href="${YOUTUBE_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">志木モデルYouTubeチャンネルを開く</a>
+    </div>
+
+    <button class="restart" onclick="restartToTop()">もう一度チェックする</button>
+  `;
+}
+
+function restartToTop(){
+  localStorage.removeItem(STORAGE_KEY);
+  answers = [];
+  currentIndex = 0;
+  startScreen();
+}
+
+window.resumeCheck = resumeCheck;
+window.restartFromBeginning = restartFromBeginning;
+window.answerQuestion = answerQuestion;
+window.goBack = goBack;
+window.restartToTop = restartToTop;
+window.copyLineComment = copyLineComment;
+
+startScreen();
+</script>
+</body>
+</html>
