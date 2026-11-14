@@ -489,7 +489,11 @@ button:hover{
 </div>
 
 <script>
-const STORAGE_KEY = "shiki_model_dx_v21";
+const LEGACY_STORAGE_KEY = "shiki_model_dx_v21";
+const STORAGE_KEY = "shiki_model_dx_v22";
+const REVISED_QUESTION_INDEXES = new Set([4, 25, 27, 28]);
+const WELFARE_INFO_URL = "https://www.city.shiki.lg.jp/site/fukushi-soudan/1343.html";
+const SENIOR_INFO_URL = "https://www.city.shiki.lg.jp/site/kourei-soudan/2842.html";
 const AI_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzy28uGC8LhandUT9lAoEqI7qwiCRcJqZqbWBNofQB9Cvy5KQ42cHkliK4JvUzBJ7hN/exec";
 const TOWN_LINE_URL = "https://lin.ee/kf5lGQ5";
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@Shiki-Model";
@@ -567,7 +571,7 @@ const questions = [
   ["house","住宅・相続","家の中に、数年以上使っていない部屋や物置状態の場所がある"],
   ["house","住宅・相続","この家を将来どうするかについて、家族との話し合いが不足している"],
   ["house","住宅・相続","家の権利証や境界に関する書類が、どこにあるかすぐには分からない"],
-  ["house","住宅・相続","今の家にあと何年住み続けるか、具体的なイメージが持てていない"],
+  ["house","住宅・相続","これから、どこで暮らしたいか、まだ考えがまとまっていない"],
 
   ["iso","人間関係・孤立","近所に、ちょっとした困りごとを気軽に頼める相手がいない"],
   ["iso","人間関係・孤立","家族や親戚と連絡を取り合うのは、数か月に一度あるかないかだ"],
@@ -593,34 +597,53 @@ const questions = [
   ["money","お金","通帳や印鑑の保管場所を、自分以外の誰も把握していない"],
   ["money","お金","知らない電話や訪問販売など、お金のトラブルが起きそうで怖い"],
 
-  ["end","終活","急な体調不良時の『第一連絡先』を周囲と共有できていない"],
+  ["end","終活","急に入院して家を空けたとき、家の管理を頼める人が決まっていない"],
   ["end","終活","家にある荷物や家財道具の整理が、まだあまり進んでいない"],
-  ["end","終活","自分の希望（医療や介護など）を書き残したものが、まだ何もない"],
-  ["end","終活","体力が落ちた時、今の家に住み続けるかどうかの判断を先送りにしている"],
+  ["end","終活","自分だけで決めるのが難しくなったとき、相談できる人や窓口が分からない"],
+  ["end","終活","住み替えるとしたら、今の家を売る・貸すなど、どんな選択肢があるか分からない"],
   ["end","終活","これからの自分や家のことについて、相談できる専門家や知人がいない"]
 ];
 
 let currentIndex = 0;
+let reviewLegacy = false;
 let answers = loadAnswers();
 const app = document.getElementById("app");
+
+function validAnswers(parsed){
+  return Array.isArray(parsed)
+    ? Array.from(parsed.slice(0, questions.length), v => v === 0 || v === 1 ? v : null)
+    : [];
+}
 
 function loadAnswers(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  }catch(e){
-    return [];
-  }
+    if(raw !== null){
+      const saved = JSON.parse(raw);
+      reviewLegacy = saved?.reviewLegacy === true;
+      return validAnswers(saved?.answers);
+    }
+    const old = validAnswers(JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEY)));
+    if(old.some(v => v === 0 || v === 1)){
+      reviewLegacy = true;
+      return old.map((v, i) => REVISED_QUESTION_INDEXES.has(i) ? null : v);
+    }
+  }catch(e){}
+  return [];
 }
 
 function saveAnswers(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(answers));
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({answers, reviewLegacy}));
+  }catch(e){}
+}
+
+function firstUnanswered(){
+  return questions.findIndex((_, i) => answers[i] !== 0 && answers[i] !== 1);
 }
 
 function startScreen(){
-  const canResume = answers.length > 0 && answers.length < questions.length;
-  if(canResume){ currentIndex = answers.length; }
+  const canResume = answers.some(v => v === 0 || v === 1) && firstUnanswered() !== -1;
 
   app.innerHTML = `
     <div class="hero">
@@ -630,19 +653,22 @@ function startScreen(){
       <p>この画面の目的は、今の状態を一度整理し、必要があれば<strong>社会福祉士をハブとする支援</strong>につながる入口をつくることです。</p>
       <p class="small">30問を「はい / いいえ」で答えます。途中で閉じても、この端末では続きから再開できます。</p>
     </div>
+    ${canResume && reviewLegacy ? `<p>質問を一部見直しました。変わっていない回答は引き継ぎ、見直した質問や未回答の質問から再開します。</p>` : ``}
     ${canResume ? `<button class="start" onclick="resumeCheck()">つづきから再開</button>` : ``}
     <button class="start" onclick="restartFromBeginning()">最初からはじめる</button>
   `;
 }
 
 function resumeCheck(){
-  currentIndex = answers.length;
+  const next = firstUnanswered();
+  currentIndex = next === -1 ? questions.length : next;
   renderQuestion();
 }
 
 function restartFromBeginning(){
-  localStorage.removeItem(STORAGE_KEY);
   answers = [];
+  reviewLegacy = false;
+  saveAnswers();
   currentIndex = 0;
   renderQuestion();
 }
@@ -661,6 +687,7 @@ function renderQuestion(){
     <div class="bar"><div class="barInner" style="width:${progress}%"></div></div>
     <div class="domain">${q[1]}</div>
     <div class="q">${q[2]}</div>
+    ${answers[currentIndex] === 0 || answers[currentIndex] === 1 ? `<p>前の回答：${answers[currentIndex] === 1 ? "はい" : "いいえ"}</p>` : ``}
     <div class="grid">
       <button class="yes" onclick="answerQuestion(1)">はい</button>
       <button class="no" onclick="answerQuestion(0)">いいえ</button>
@@ -671,7 +698,13 @@ function renderQuestion(){
 
 function answerQuestion(value){
   answers[currentIndex] = value;
-  currentIndex++;
+  if(reviewLegacy){
+    const next = firstUnanswered();
+    currentIndex = next === -1 ? questions.length : next;
+    if(next === -1) reviewLegacy = false;
+  }else{
+    currentIndex++;
+  }
   saveAnswers();
   renderQuestion();
 }
@@ -679,8 +712,10 @@ function answerQuestion(value){
 function goBack(){
   if(currentIndex > 0){
     currentIndex--;
-    answers = answers.slice(0, currentIndex);
-    saveAnswers();
+    if(!reviewLegacy){
+      answers = answers.slice(0, currentIndex);
+      saveAnswers();
+    }
     renderQuestion();
   }else{
     startScreen();
@@ -929,11 +964,20 @@ function buildLocalAiComment(total, topDomains, scores){
   return severityIntro + " " + domainText + extra + " まずは地域包括支援センターに相談し、社会福祉士を中心に今の状況を整理する。その上で、どのような制度や支援が使えるのかを一緒に考えていくことが安心につながります。";
 }
 
-function buildLineShareText(result, topDomains, aiComment){
+function priorityConsultation(){
+  const notes = [];
+  if(answers[25] === 1) notes.push("急に家を空けたとき、家の管理を誰に頼めるか");
+  if(answers[27] === 1) notes.push("自分だけで決めるのが難しくなったとき、誰に相談できるか");
+  return notes;
+}
+
+function buildLineShareText(result, topDomains, aiComment, priority = []){
   const lines = [];
   lines.push("【住まいと暮らしチェック 結果共有】");
   lines.push("");
-  lines.push("総合判定：" + getStage(result.total) + "（" + result.total + "/30点）");
+  const stage = priority.length && result.total <= 4 ? "早めに相談しておきたいことあり" : getStage(result.total);
+  lines.push("総合判定：" + stage + "（" + result.total + "/30点）");
+  if(priority.length) lines.push("相談したいこと：" + priority.join("、"));
   if(topDomains[0]){
     lines.push("特に注意したい分野①：" + domainInfo[topDomains[0][0]].label + "（" + topDomains[0][1] + "/5）");
   }
@@ -941,11 +985,11 @@ function buildLineShareText(result, topDomains, aiComment){
     lines.push("特に注意したい分野②：" + domainInfo[topDomains[1][0]].label + "（" + topDomains[1][1] + "/5）");
   }
   lines.push("");
-  lines.push("AI整理コメント：");
+  lines.push(priority.length ? "相談のヒント：" : "AI整理コメント：");
   lines.push(aiComment);
   lines.push("");
   lines.push("相談の入口：");
-  lines.push("地域包括支援センターに相談し、社会福祉士を中心に今の状況を整理する。");
+  lines.push("志木市の福祉の相談窓口に相談し、今の状況を整理する。");
   return lines.join("\n");
 }
 
@@ -986,21 +1030,33 @@ async function copyLineComment(){
 async function renderResult(){
   const result = calcResult();
   const topDomains = topRiskDomains(result.sorted);
-  const aiComment = await fetchAiComment(result.total, topDomains, result.scores);
-  const lineShareText = buildLineShareText(result, topDomains, aiComment);
+  const priority = priorityConsultation();
+  const consultFirst = priority.length > 0 && result.total <= 4;
+  const priorityMessage = "点数にかかわらず、早めに相談しておきたいことがあります。ひとりで決めず、福祉の相談窓口と一緒に整理してみましょう。";
+  const aiComment = priority.length ? priorityMessage : await fetchAiComment(result.total, topDomains, result.scores);
+  const lineShareText = buildLineShareText(result, topDomains, aiComment, priority);
 
   app.innerHTML = `
     <h1>チェック結果</h1>
 
+    ${priority.length ? `<div class="section">
+      <h2>先に相談しておきたいこと</h2>
+      <div class="subBox">
+        <ul>${priority.map(note => `<li>${note}</li>`).join("")}</ul>
+        <p>点数が低くても、今のうちに相談できます。</p>
+        <a class="tel" href="${WELFARE_INFO_URL}">志木市の福祉の相談窓口を見る</a>
+      </div>
+    </div>` : ``}
+
     <div class="summaryCard">
       <div class="summaryTop">
-        <div class="stateTitle">${getStateTitle(result.total)}</div>
+        <div class="stateTitle">${consultFirst ? "先に相談しておきたいことがあります" : getStateTitle(result.total)}</div>
         <div class="scoreBadge">${result.total} / 30点</div>
       </div>
       <div class="quickGrid">
         <div class="quickCard">
           <div class="quickLabel">判定</div>
-          <div class="quickValue">${getStage(result.total)}</div>
+          <div class="quickValue">${consultFirst ? "早めの相談をおすすめ" : getStage(result.total)}</div>
         </div>
         <div class="quickCard">
           <div class="quickLabel">特に注意したい分野</div>
@@ -1022,9 +1078,9 @@ async function renderResult(){
     </div>
 
     <div class="section">
-      <h2>AIコメント</h2>
+      <h2>${priority.length ? "相談のヒント" : "AIコメント"}</h2>
       <div class="aiBox">
-        <div class="aiLabel">AI整理メッセージ</div>
+        <div class="aiLabel">${priority.length ? "先に相談したい項目を案内しています" : "AI整理メッセージ"}</div>
         <div class="aiTitle">あなた向けのコメント</div>
         <p>${aiComment}</p>
       </div>
@@ -1047,7 +1103,7 @@ async function renderResult(){
       <div class="subBox">
         <p>このチェックで大切なのは、点数そのものではなく、<strong>どこで判断が止まりやすくなっているか</strong>に気づくことです。</p>
         <p>志木モデルでは、空き家は結果であり、その前にある暮らしの変化や判断の先送りに早く気づくことが重要だと考えます。</p>
-        <p>${getStateMessage(result.total)}</p>
+        <p>${consultFirst ? priorityMessage : getStateMessage(result.total)}</p>
       </div>
     </div>
 
@@ -1063,11 +1119,10 @@ async function renderResult(){
       <h2>相談先</h2>
       <div class="subBox">
         <p>志木モデルでは、社会福祉士がハブとなって、本人の思いや生活状況を整理し、必要に応じて保健師・主任ケアマネジャー・医療・介護・住まい・法律・金融・地域支援などの支援につなぐ考え方を重視しています。</p>
-        <p>まずは地域包括支援センターに相談し、社会福祉士を中心に今の状況を整理する。その上で、どのような制度や支援が使えるのかを一緒に考えていきます。</p>
+        <p>どこに相談するか迷ったら、基幹福祉相談センターへ。高齢者の介護や暮らしの相談は、地区を担当する高齢者あんしん相談センターにも相談できます。</p>
       </div>
-      <a class="tel" href="tel:0484718201">志木市高齢者あんしん相談センター（中央） 048-471-8201</a>
-      <a class="tel" href="tel:0484713555">志木市高齢者あんしん相談センター（南部） 048-471-3555</a>
-      <a class="tel" href="tel:0484714165">志木市高齢者あんしん相談センター（北部） 048-471-4165</a>
+      <a class="tel" href="${WELFARE_INFO_URL}">基幹福祉相談センター（志木市公式）</a>
+      <a class="tel" href="${SENIOR_INFO_URL}">地区別の高齢者あんしん相談センター（志木市公式）</a>
     </div>
 
     <div class="section">
@@ -1086,8 +1141,9 @@ async function renderResult(){
 }
 
 function restartToTop(){
-  localStorage.removeItem(STORAGE_KEY);
   answers = [];
+  reviewLegacy = false;
+  saveAnswers();
   currentIndex = 0;
   startScreen();
 }
